@@ -131,10 +131,6 @@ gulp.task('watch', function () {
   gulp.watch([
     join(cnf.app.pathJS, '**/**.js')
   ], ['build-js']);
-
-  gulp.watch([
-    './bower.json'
-  ], ['vendor']);
 });
 
 gulp.task('default', [

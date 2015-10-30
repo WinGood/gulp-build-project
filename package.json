@@ -1,7 +1,7 @@
 {
-  "name": "e92.dev",
-  "description": "e92.dev",
-  "version": "0.0.1",
+  "name": "Setting Up Project",
+  "description": "Setting Up Gulp with LiveReload, Sass, Browserify, Environment, Bower and other task",
+  "version": "0.1.0",
   "devDependencies": {
     "babelify": "^6.4.0",
     "browserify": "^11.2.0",
@@ -36,9 +36,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://Zzzaki@bitbucket.org/e92_git/e92_project.git"
+    "url": "git+https://github.com/WinGood/gulp-build-project.git"
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/e92_git/e92_project#readme"
+  "homepage": "https://github.com/WinGood/gulp-build-project.git"
 }
