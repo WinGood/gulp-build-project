@@ -12,6 +12,7 @@
 // 10. Кэширование bower зависимостей
 // 11. Настроить конфиги +
 // 12. 2 Сборки dev, production +
+// 13. Уменьшить время сборки
 
 var gulp = require('gulp'),
   sass = require('gulp-sass'),
