@@ -1,0 +1,10 @@
+// Includes всякие глобальные файлы
+#tabsContent .tab{
+  display: none;
+}
+#tabsContent .tab.selected{
+  display: block;
+}
+.over{
+  color: blue;
+}
