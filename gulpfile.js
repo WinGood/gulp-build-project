@@ -1,18 +1,32 @@
 'use strict';
-// Узкие места
-// 1. bootstrap.js
-// 2. обработка gulp ошибок +
-// 3. подгрузка vendor css +
-// 4. gulpfile change restart -
-// 5. интеграция с bower.json +
-// 6. контроллеры -> модули
-// 7. NODE_ENV +
-// 8. Перейти на webpack -
-// 9. Babel +
-// 10. Кэширование bower зависимостей
-// 11. Настроить конфиги +
-// 12. 2 Сборки dev, production +
-// 13. Уменьшить время сборки
+
+// Перенос картинок и шрифтов
+
+/**
+ * Перенос на e92
+ * 1. Перенести все что можно в bower
+ * 2. Перенести все css, sass
+ * 3. Все что не попало в bower в js/scripts и sass/partials
+ *
+ * BOWER:
+ * intro.js
+ * jquery.autocomplete
+ * jquery.tooltipster
+ * jquery.tagsinput
+ * jqjquery-wysibb
+ * html5-history-api
+ * fancyBox
+ * dw-bxslider-4
+ * jquery.raty
+ * chosen
+ * swfobject
+ * tinymce-dist
+ * jquery-ui
+ * jQuery-Timepicker-Addon
+ * jstree
+ * jquery-cookie
+ * jqgrid
+ */
 
 var gulp = require('gulp'),
   sass = require('gulp-sass'),

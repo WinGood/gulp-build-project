@@ -9,7 +9,8 @@ console.log('test6');
 
 // Глобальные модули
 window['jQuery'] = window['$'] = jQuery;
-var tooltipster = require('tooltipster');
+require('tooltipster');
+require('raty/lib/jquery.raty');
 
 jQuery(function(){
   require('./controllers/controller1');

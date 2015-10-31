@@ -5,7 +5,8 @@ var Controller = require('_controller');
 var MainController = Controller.create({
   elements: {
     "div.somediv": "hoverElement",
-    "div.tooltipster-btn": "tooltip"
+    "div.tooltipster-btn": "tooltip",
+    "div.raty": "ratyElement"
   },
 
   events: {
@@ -16,6 +17,7 @@ var MainController = Controller.create({
   init: function(){
     //console.log(arguments);
     this.tooltip.tooltipster();
+    this.ratyElement.raty();
   },
 
   toggleClass: function(e){
