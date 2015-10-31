@@ -5,6 +5,8 @@ if (process.env.NODE_ENV === "development") {
   console.log('development only')
 }
 
+console.log('test6');
+
 // Глобальные модули
 window['jQuery'] = window['$'] = jQuery;
 var tooltipster = require('tooltipster');

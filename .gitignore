@@ -2,3 +2,4 @@
 node_modules
 assets/vendor
 assets/js/*.js.map
+src/vendor.css

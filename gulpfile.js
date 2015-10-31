@@ -30,7 +30,6 @@ var gulp = require('gulp'),
   filter = require('gulp-filter'),
   mainBowerFiles = require('main-bower-files'),
   sourcemaps = require('gulp-sourcemaps'),
-  //lazypipe = require('lazypipe'),
   es = require("event-stream"),
   buffer = require('vinyl-buffer'),
   uglify = require('gulp-uglify'),
@@ -38,6 +37,8 @@ var gulp = require('gulp'),
   colors = require('colors');
 
 var NODE_ENV = process.env.NODE_ENV || 'development';
+var vendorBuild = false;
+
 var cnf = {
   publicPathJs: join(__dirname, 'assets/js'),
   publicPathCss: join(__dirname, 'assets/css'),
@@ -62,12 +63,19 @@ function log(error) {
 }
 
 gulp.task('build-sass', function () {
-  var vendors   = mainBowerFiles();
-  var vendorCSS = gulp.src(vendors)
-    .pipe(plumber())
-    .pipe(filter(['**.css', '**.less']))
-    .pipe(less())
+  if (!vendorBuild) {
+    var vendors = mainBowerFiles();
+    gulp.src(vendors)
+      .pipe(plumber())
+      .pipe(filter(['**.css', '**.less']))
+      .pipe(less())
+      .pipe(concat('vendor.css'))
+      .pipe(gulp.dest(join(__dirname, '/src')));
 
+    vendorBuild = true;
+  }
+
+  var vendorCSS = gulp.src(join(__dirname, '/src/vendor.css'));
   var bundleCSS = gulp.src([
     join(cnf.app.pathCSS, '**/*.sass'),
     join(cnf.app.pathCSS, '**/*.scss'),
@@ -104,7 +112,7 @@ gulp.task('build-js', function () {
       global: true
     }, 'uglifyify');
 
-  bundler.bundle().on('error', log)
+  return bundler.bundle().on('error', log)
     .pipe(source(cnf.app.result))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: NODE_ENV == 'development'}))
@@ -113,8 +121,13 @@ gulp.task('build-js', function () {
     .pipe(livereload());
 });
 
+gulp.task('vendor', function () {
+  vendorBuild = false;
+});
+
 gulp.task('watch', function () {
   livereload.listen();
+
   // Template
   gulp.watch([
     './tmpl/*.php',
@@ -127,6 +140,11 @@ gulp.task('watch', function () {
     join(cnf.app.pathCSS, '**/*.sass'),
     join(cnf.app.pathCSS, '**/*.scss'),
   ], ['build-sass']);
+
+  // Bower vendor
+  gulp.watch([
+    './bower.json'
+  ], ['vendor', 'build-sass']);
 
   // JS
   gulp.watch([
