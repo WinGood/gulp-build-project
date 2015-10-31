@@ -42,11 +42,15 @@ var vendorBuild = false;
 var cnf = {
   publicPathJs: join(__dirname, 'assets/js'),
   publicPathCss: join(__dirname, 'assets/css'),
-  app: {
-    pathJS: join(__dirname, 'src/js'),
-    pathCSS: join(__dirname, 'src/sass'),
+  js: {
+    path: join(__dirname, 'src/js'),
     main: 'bootstrap.js',
     result: 'bundle.js'
+  },
+  css: {
+    path: join(__dirname, 'src/sass'),
+    main: 'bootstrap.scss',
+    result: 'bundle.css'
   }
 };
 
@@ -77,8 +81,7 @@ gulp.task('build-sass', function () {
 
   var vendorCSS = gulp.src(join(__dirname, '/src/vendor.css'));
   var bundleCSS = gulp.src([
-    join(cnf.app.pathCSS, '**/*.sass'),
-    join(cnf.app.pathCSS, '**/*.scss'),
+    join(cnf.css.path, cnf.css.main),
   ])
     .pipe(plumber())
     .pipe(sass())
@@ -88,32 +91,34 @@ gulp.task('build-sass', function () {
     }));
 
   return es.merge(vendorCSS, bundleCSS)
-    .pipe(concat('bundle.css'))
+    .pipe(sourcemaps.init({loadMaps: NODE_ENV == 'development'}))
+    .pipe(concat(cnf.css.result))
     .pipe(minifycss({compatibility: 'ie8'}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(cnf.publicPathCss))
     .pipe(livereload());
 });
 
 gulp.task('build-js', function () {
   var bundler = browserify({
-    basedir: cnf.app.pathJS,
+    basedir: cnf.js.path,
     paths: ['components', 'plugins'],
     debug: NODE_ENV == 'development'
   })
-    .add(join(cnf.app.pathJS, cnf.app.main))
+    .add(join(cnf.js.path, cnf.js.main))
     .transform(envify({
       NODE_ENV: NODE_ENV
     }))
     .transform(debowerify)
     .transform(babelify, {
-      only: cnf.app.pathJS
+      only: cnf.js.path
     })
     .transform({
       global: true
     }, 'uglifyify');
 
   return bundler.bundle().on('error', log)
-    .pipe(source(cnf.app.result))
+    .pipe(source(cnf.js.result))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: NODE_ENV == 'development'}))
     .pipe(sourcemaps.write('./'))
@@ -128,17 +133,9 @@ gulp.task('vendor', function () {
 gulp.task('watch', function () {
   livereload.listen();
 
-  // Template
-  gulp.watch([
-    './tmpl/*.php',
-    './tmpl/**/*.php'
-  ], function (e) {
-  }).on('change', livereload.changed);
-
   // Sass
   gulp.watch([
-    join(cnf.app.pathCSS, '**/*.sass'),
-    join(cnf.app.pathCSS, '**/*.scss'),
+    join(cnf.css.path, cnf.css.main),
   ], ['build-sass']);
 
   // Bower vendor
@@ -148,7 +145,7 @@ gulp.task('watch', function () {
 
   // JS
   gulp.watch([
-    join(cnf.app.pathJS, '**/**.js')
+    join(cnf.js.path, cnf.js.main),
   ], ['build-js']);
 });
 

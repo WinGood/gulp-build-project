@@ -1,5 +1,5 @@
 {
-  "name": "Setting Up Project",
+  "name": "Gulp-builder-project",
   "description": "Setting Up Gulp with LiveReload, Sass, Browserify, Environment, Bower and other task",
   "version": "0.1.0",
   "devDependencies": {
